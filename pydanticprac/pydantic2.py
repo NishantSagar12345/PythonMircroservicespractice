@@ -2,6 +2,7 @@ from datetime import UTC, datetime
 from pydantic import BaseModel,ValidationError,Field
 from functools import partial
 from typing import Literal,Annotated
+from uuid import UUID, uuid4
 class User(BaseModel):
     uid: Annotated[int,Field(gt=0)]
     username:Annotated[str,Field(min_length=3,max_length=200)]
@@ -20,7 +21,7 @@ class Item(BaseModel):
    ingredients: list[str]=Field(default_factory=list)
    uid: str|int
    status: Literal["bought","returned","notb"]="notb"
-
+   url: Annotated[str,Field(pattern=r"^[a-z0-9-]+$")]
 
 try:
  user1=User(uid=123,username="Nishant",email="Nishant@gmail.com",age=22)
