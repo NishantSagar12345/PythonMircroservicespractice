@@ -1,5 +1,6 @@
-from datetime import datetime
+from datetime import UTC, datetime
 from pydantic import BaseModel,ValidationError,Field
+from functools import partial
 class User(BaseModel):
     uid: int
     username:str
@@ -13,7 +14,7 @@ class Item(BaseModel):
    itemid: int
    itemname: str
    itemprice: int 
-   purchased_at: datetime | None=None
+   purchased_at: datetime=Field(default_factory=partial(datetime.now,tz=UTC))
    expired: bool=False
    ingredients: list[str]=Field(default_factory=list)
 
