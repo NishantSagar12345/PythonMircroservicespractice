@@ -1,9 +1,10 @@
 from datetime import UTC, datetime
 from pydantic import BaseModel,ValidationError,Field
 from functools import partial
+from typing import Literal,Annotated
 class User(BaseModel):
-    uid: int
-    username:str
+    uid: Annotated[int,Field(gt=0)]
+    username:Annotated[str,Field(min_length=3,max_length=200)]
     email: str
     verified_at: datetime | None=None
     is_active: bool=True
@@ -17,6 +18,8 @@ class Item(BaseModel):
    purchased_at: datetime=Field(default_factory=partial(datetime.now,tz=UTC))
    expired: bool=False
    ingredients: list[str]=Field(default_factory=list)
+   uid: str|int
+   status: Literal["bought","returned","notb"]="notb"
 
 
 try:
